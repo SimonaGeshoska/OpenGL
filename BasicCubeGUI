@@ -1,0 +1,15 @@
+//Initialization
+of
+AntTweakBar
+TwInit(TW_OPENGL_CORE,NULL);
+TwWindowSize(windowWidth,windowHeight);
+myBar=TwNewBar("myBar");
+TwAddVarRW(myBar,"wire",TW_TYPE_BOOL32,&wireFrame,"label='Wireframemode'key=whelp='Toggle\wireframe
+displaymode.'");
+TwAddVarRW(myBar,"bgColor",TW_TYPE_COLOR4F,glm::value_ptr(bgColor),"
+label='Backgroundcolor'"
+);
+//AntTweakBar Rendering in main loop
+TwDraw();
+//Ant Tweak Bar Termination
+TwTerminate();
