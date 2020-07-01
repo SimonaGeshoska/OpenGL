@@ -1,0 +1,30 @@
+void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+    vec2 st = vec2( fragCoord.xy - 0.*iResolution.xy );
+    st = st.xy/iResolution.y;
+    st.x -= .5;
+    vec3 color = vec3(0.0);
+
+    vec2 pos = vec2(0.5)-st;
+
+    float r = length(pos)*2.0;
+    float a = atan(pos.y,pos.x);
+
+    float f;
+    f=2.+(((abs(cos(a*3.)))+(0.35-(abs(cos(a*3.+3.14/2.))))*2.)/(2.+abs(cos(a*6.+3.14/2.))*8.));
+    //f/=0.5;
+    
+    f = pow(f,(sin((iTime + 47.)/10.) + 1.) * 15.);
+    
+  	vec3 ring1 = vec3(1.-smoothstep(f,f+0.2,r) - (1.-smoothstep(f-0.2,f,r)));
+    color = ring1;
+ 
+    for (int i = 0; i < 30; i++){
+        f/=1.3;
+        vec3 ring = vec3(1.-smoothstep(f,f+0.2,r) - (1.-smoothstep(f-0.2,f,r)));
+            color += ring;
+    }
+    
+    color *= vec3(abs(sin(iTime * 2. + r)), abs(cos(iTime/2. + r)), abs(sin(iTime + r)));
+
+    fragColor = vec4(color, 1.0);
+}
