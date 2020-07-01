@@ -1,0 +1,22 @@
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+	vec2 uv = vec2( fragCoord.xy - 0.*iResolution.xy );
+    uv = uv.xy/iResolution.y;
+    uv.x -= .5;
+    
+    vec2 pos = vec2(0.5)-uv;
+    float r = length(pos)*2.0;
+    float a = atan(pos.y,pos.x);
+    float a2 = a;
+    float r2 = r;
+
+    float f = abs(fract(cos(a * iTime * 2.)) + sin(iTime) * mod(a * 2., r) + log(r));
+    float trans = step(30., iTime) * ((iTime - 30.)/10.);
+    f += sin(iTime) * mix(reflect(a2, r2), reflect (a, f), trans);
+    vec3 ring1 = vec3(1.-smoothstep(f,f+0.5,r) - (1.-smoothstep(f-0.5,f,r)));
+    f*=50.;
+    vec3 ring2 = vec3(1.-smoothstep(f,f+1.,r) - (1.-smoothstep(f-1.,f,r)));
+    vec3 color = ring1 + ring2;
+    color *= vec3(abs(sin(iTime * 2. + r)), abs(cos(iTime/2. + r)), abs(sin(iTime + r)));
+    fragColor = vec4(color, 1.0);
+}
