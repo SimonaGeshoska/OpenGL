@@ -1,0 +1,33 @@
+#version 150 core
+//Data as passed from vertex shader 
+in vec3 wPosition; 
+in vec3 EyeDirection;
+in vec3 LightDirection;
+in vec3 fNormal;
+out vec4 colorOUT;
+uniform vec3 LightPosition;
+uniform vec3 MaterialDiffuseColor;
+uniform vec3 MaterialAmbientColor;
+uniform vec3 MaterialSpecularColor;
+uniform float LightIntensity;
+uniform float Shininess;
+uniform vec3 LightDiffuseColor;
+uniform vec3 LightAmbientColor;
+uniform vec3 LightSpecularColor;
+void main()
+{
+vec3 n = normalize(fNormal);
+vec3 l = normalize(LightDirection);
+vec3 v = normalize(EyeDirection);
+vec3 H = normalize(l + v);
+float cosTheta = max(dot(n,l),0.0);
+float cosAlpha=pow(max(dot(n,H),0.0),Shininess);
+//Attenuation
+float d=length(LightPosition-wPosition);
+colorOUT=vec4(
+MaterialAmbientColor*LightAmbientColor+
+MaterialDiffuseColor*LightDiffuseColor*Light
+Intensity*cosTheta/(d*d)+
+MaterialSpecularColor*LightSpecularColor*Light
+Intensity*cosAlpha/(d*d),1.0);
+}
